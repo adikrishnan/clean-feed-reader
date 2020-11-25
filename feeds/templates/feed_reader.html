@@ -1,9 +1,20 @@
-{% if posts %}
-    <ul>
-    {% for post in posts %}
-        <li>{{ post.title }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No posts are available.</p>
-{% endif %}
+{% extends "base.html" %}
+
+{% block title %}Livemint Feed{% endblock %}
+
+{% block content %}
+    {% if posts %}
+        {% for post in posts %}
+            <div class="uk-card uk-card-body">
+                <h3 class="uk-card-title">{{ post.title }}</h3>
+                <div class="uk-card-body">
+                    <p>{{ post.post }}</p>
+                </div>
+            </div>
+        <ul>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts are available.</p>
+    {% endif %}
+{% endblock %}
