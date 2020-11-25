@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'clean-feed-reader.herokuapp.com',
+    'localhost',
 ]
 
 
