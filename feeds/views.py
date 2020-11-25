@@ -8,4 +8,3 @@ def feed_reader_view(request):
     posts = FeedReader(mint_url, full_post=True).posts()
     context = {'posts': posts}
     return render(request, 'feed_reader.html', context)
-
