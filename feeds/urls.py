@@ -3,5 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path('livemint/', views.feed_reader_view),
+    path('livemint/', views.livemint_reader_view),
+    path('quint/', views.quint_reader_view),
 ]
