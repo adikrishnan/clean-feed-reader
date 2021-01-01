@@ -24,13 +24,7 @@ class ParserFactory(ABC):
     @property
     def entries(self):
         """ All entries as provided by parser """
-        if not self._entries:
-            self._entries = self.parser.get('entries')
-        # Entries are excerpts only and full post needs to be retrieved from
-        # the feed after sufficient post transformation.
-        if self.full_post:
-            return self._build_entries()
-        return self._entries
+        return self._build_entries()
 
     @abstractmethod
     def filter_text(self, text):
@@ -41,24 +35,33 @@ class ParserFactory(ABC):
         if len(text.split(' ')) > self.MIN_WORDS:
             return text
 
+    def save_posts(self):
+        """ Save the entries to the database. """
+        pass
+
     def _build_entries(self):
         """ Manually build full post entries using each link the feed. """
         if not self._entries:
             self._entries = self.parser.get('entries')
-        for item in self._entries:
-            if not item.get('post'):
-                r = requests.get(item['link'])
-                soup = BeautifulSoup(r.text, 'html.parser')
-                post = list(
-                    filter(None, map(self.filter_text, soup.stripped_strings))
-                )
-                item['post'] = '\n'.join(post)
+        if self.full_post:
+            for item in self._entries:
+                if not item.get('post'):
+                    r = requests.get(item['link'])
+                    soup = BeautifulSoup(r.text, 'html.parser')
+                    post = list(
+                        filter(
+                            None,
+                            map(self.filter_text, soup.stripped_strings)
+                        )
+                    )
+                    item['post'] = '\n'.join(post)
+        # save posts here
         return self._entries
 
 
 class GenericParser(ParserFactory):
     """ Generic parser implementation. """
-    
+
     def filter_text(self, text):
         """ Override abstract implementation """
         return super().filter_text(text)
