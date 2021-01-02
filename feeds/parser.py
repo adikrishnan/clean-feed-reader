@@ -15,6 +15,15 @@ class ParserFactory(ABC):
     """ An abstract factory implementation to handle specific feed parsers
     as required. """
     MIN_WORDS = 30
+    EXTRACT_FIELDS = {
+        'title': 'title',
+        'author': 'author',
+        'link': 'link',
+        'summary': 'summary',
+        'published': 'published_parsed',
+        'updated': 'updated_parsed',
+        # 'summary': 'post', TODO: Enable this later
+    }
 
     def __init__(self, feed_url, full_post=False):
         self.feed_url = feed_url
@@ -56,21 +65,13 @@ class ParserFactory(ABC):
 
     def _transform(self, data_dict):
         """ Transform the dictionary to include fields as per model. """
-        # TODO: Move this to settings maybe?
-        extract_fields = {
-            'title': 'title',
-            'author': 'author',
-            'link': 'link',
-            'summary': 'summary',
-            'published': 'published_parsed',
-            'updated': 'updated_parsed',
-            # 'summary': 'post', TODO: Enable this later
-        }
-        model_data = {key: data_dict[value] for key, value in extract_fields.items()}
+        model_data = {key: data_dict.get(value) for key, value in self.EXTRACT_FIELDS.items()}
         model_data['id'] = uuid.UUID(
             hashlib.md5(model_data.get('title').encode('utf-8')).hexdigest()
         )
         model_data['source'] = model_data.get('link').split('/')[2]
+        if not model_data.get('author'):
+            model_data['author'] = model_data['source']
         model_data['published'] = datetime.fromtimestamp(
             time.mktime(model_data.get('published'))
         )
