@@ -6,7 +6,7 @@ from feeds.reader import FeedReader
 
 def livemint_reader_view(request):
     mint_url = 'https://www.livemint.com/rss/opinion'
-    posts = FeedReader(mint_url, full_post=True).posts()
+    posts = FeedReader(mint_url).posts()
     context = {'posts': posts}
     return render(request, 'feed_reader.html', context)
 
@@ -20,6 +20,6 @@ def quint_reader_view(request):
 
 def gwtj_reader_view(request):
     gwtj_url = 'https://girlwiththejacket.wordpress.com/feed/'
-    posts = FeedReader(gwtj_url, full_post=True).posts()
+    posts = FeedReader(gwtj_url).posts()
     context = {'posts': posts}
     return render(request, 'feed_reader.html', context)

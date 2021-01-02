@@ -38,7 +38,7 @@ class ParserFactory(ABC):
         """ Filter to weed out any text that might not be related to the
         post itself.
         """
-        # A basic logic based on number of words in the post.
+        # TODO: Fix logic before enabling full post retrieval
         if len(text.split(' ')) > self.MIN_WORDS:
             return text
 
