@@ -4,20 +4,32 @@
 
 {% block content %}
     {% if posts %}
+        <div class="uk-child-width-1-2 uk-grid-divider uk-text-center" uk-grid>
         {% for post in posts %}
-            <div class="uk-card uk-card-body">
-                <h3 class="uk-card-title">{{ post.title }}</h3>
-                {% if post.post %}
-                <div class="uk-card-body">
-                    <p>{{ post.post }}</p>
+            <div class="uk-card uk-card-secondary uk-width-1-2@m">
+                <div class="uk-card-header">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-expand">
+                            <h3 class="uk-card-title uk-margin-remove-bottom">{{ post.title }}</h3>
+                            <p class="uk-text-meta uk-margin-remove-top">
+                                at <time datetime="{{ post.published }}">{{ post.published }}</time> by {{post.author}}
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                {% else %}
                 <div class="uk-card-body">
-                    <p>{{ post.description }}</p>
+                    {% if post.post %}
+                        <p>{{ post.post }}</p>
+                    {% else %}
+                        <p>{{ post.summary }}</p>
+                    {% endif %}
                 </div>
-                {% endif %}
+                <div class="uk-card-footer">
+                    <a href={{post.link}} target="_blank" class="uk-button uk-button-text">Read more</a>
+                </div>
             </div>
         {% endfor %}
+        </div>
     {% else %}
         <p>No posts are available.</p>
     {% endif %}
