@@ -82,7 +82,7 @@ class ParserFactory(ABC):
             model_data['post'] = self._get_post(model_data.get('link'))
         return model_data
 
-    def save_posts(self, data):
+    def save_posts(self):
         """ Save the entries to the database. """
         feed_entries = map(lambda x: FeedSummary(**x), self._entries)
         FeedSummary.objects.bulk_create(feed_entries, ignore_conflicts=True)
