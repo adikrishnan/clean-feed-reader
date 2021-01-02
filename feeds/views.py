@@ -14,3 +14,10 @@ def gwtj_reader_view(request):
     posts = FeedReader(gwtj_url).posts()
     context = {'posts': posts}
     return render(request, 'feed_reader.html', context)
+
+
+def moneycontrol_reader_view(request):
+    moneycontrol_url = 'https://www.moneycontrol.com/rss/MCtopnews.xml'
+    posts = FeedReader(moneycontrol_url).posts()
+    context = {'posts': posts}
+    return render(request, 'feed_reader.html', context)
