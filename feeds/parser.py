@@ -1,12 +1,16 @@
+import time
 import uuid
 import hashlib
+from datetime import datetime
 from abc import ABC, abstractmethod
 import requests
 import feedparser
 from bs4 import BeautifulSoup
-from .models import FeedDetail, FeedSummary
+from .models import FeedSummary
 
 
+# TODO: Use a different pattern that separates individual record transformation
+# from transformation of set of records.
 class ParserFactory(ABC):
     """ An abstract factory implementation to handle specific feed parsers
     as required. """
@@ -53,33 +57,41 @@ class ParserFactory(ABC):
     def _transform(self, data_dict):
         """ Transform the dictionary to include fields as per model. """
         # TODO: Move this to settings maybe?
-        extract_fields = [
-            'title',
-            'author',
-            'link',
-            'summary',
-            'published',
-            'updated',
-            'post',
-        ]
-        model_data = {key: data_dict.get(key) for key in extract_fields}
+        extract_fields = {
+            'title': 'title',
+            'author': 'author',
+            'link': 'link',
+            'summary': 'summary',
+            'published': 'published_parsed',
+            'updated': 'updated_parsed',
+            # 'summary': 'post', TODO: Enable this later
+        }
+        model_data = {key: data_dict[value] for key, value in extract_fields.items()}
         model_data['id'] = uuid.UUID(
             hashlib.md5(model_data.get('title').encode('utf-8')).hexdigest()
         )
         model_data['source'] = model_data.get('link').split('/')[2]
+        model_data['published'] = datetime.fromtimestamp(
+            time.mktime(model_data.get('published'))
+        )
+        model_data['updated'] = datetime.fromtimestamp(
+            time.mktime(model_data.get('updated'))
+        )
         if self.full_post:
             model_data['post'] = self._get_post(model_data.get('link'))
         return model_data
 
-    def save_posts(self):
+    def save_posts(self, data):
         """ Save the entries to the database. """
-        pass
+        feed_entries = map(lambda x: FeedSummary(**x), self._entries)
+        FeedSummary.objects.bulk_create(feed_entries, ignore_conflicts=True)
 
     def _build_entries(self):
         """ Manually build full post entries using each link the feed. """
         if not self._entries:
             self._entries = self.parser.get('entries')
         self._entries = list(map(self._transform, self._entries))
+        self.save_posts()
         return self._entries
 
 
