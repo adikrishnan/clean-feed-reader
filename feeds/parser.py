@@ -1,7 +1,10 @@
+import uuid
+import hashlib
 from abc import ABC, abstractmethod
 import requests
 import feedparser
 from bs4 import BeautifulSoup
+from .models import FeedDetail, FeedSummary
 
 
 class ParserFactory(ABC):
@@ -35,6 +38,39 @@ class ParserFactory(ABC):
         if len(text.split(' ')) > self.MIN_WORDS:
             return text
 
+    def _get_post(self, link):
+        """ Get full post detail for a specific feed entry. """
+        r = requests.get(link)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        post = list(
+            filter(
+                None,
+                map(self.filter_text, soup.stripped_strings)
+            )
+        )
+        return '\n'.join(post)
+
+    def _transform(self, data_dict):
+        """ Transform the dictionary to include fields as per model. """
+        # TODO: Move this to settings maybe?
+        extract_fields = [
+            'title',
+            'author',
+            'link',
+            'summary',
+            'published',
+            'updated',
+            'post',
+        ]
+        model_data = {key: data_dict.get(key) for key in extract_fields}
+        model_data['id'] = uuid.UUID(
+            hashlib.md5(model_data.get('title').encode('utf-8')).hexdigest()
+        )
+        model_data['source'] = model_data.get('link').split('/')[2]
+        if self.full_post:
+            model_data['post'] = self._get_post(model_data.get('link'))
+        return model_data
+
     def save_posts(self):
         """ Save the entries to the database. """
         pass
@@ -43,19 +79,7 @@ class ParserFactory(ABC):
         """ Manually build full post entries using each link the feed. """
         if not self._entries:
             self._entries = self.parser.get('entries')
-        if self.full_post:
-            for item in self._entries:
-                if not item.get('post'):
-                    r = requests.get(item['link'])
-                    soup = BeautifulSoup(r.text, 'html.parser')
-                    post = list(
-                        filter(
-                            None,
-                            map(self.filter_text, soup.stripped_strings)
-                        )
-                    )
-                    item['post'] = '\n'.join(post)
-        # save posts here
+        self._entries = list(map(self._transform, self._entries))
         return self._entries
 
 
