@@ -78,6 +78,7 @@ class ParserFactory(ABC):
         model_data['updated'] = datetime.fromtimestamp(
             time.mktime(model_data.get('updated'))
         )
+        model_data['summary'] = BeautifulSoup(model_data.get('summary'), "lxml").text
         if self.full_post:
             model_data['post'] = self._get_post(model_data.get('link'))
         return model_data
