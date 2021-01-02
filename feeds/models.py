@@ -5,7 +5,6 @@ from django.db import models
 class FeedSummary(models.Model):
     id = models.UUIDField(primary_key=True)
     title = models.TextField()
-    title_detail = models.TextField(null=True, blank=True)
     author = models.CharField(max_length=500)
     link = models.URLField()
     summary = models.TextField()
