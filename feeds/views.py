@@ -1,6 +1,17 @@
 from django.shortcuts import render
-from django.urls import get_resolver
 from feeds.reader import FeedReader
+from feeds.models import FeedSources
+
+
+def get_feeds_context(name, reader_class=FeedReader):
+    feed = FeedSources.objects.get(name=name)
+    posts = reader_class(feed.feed_url).posts()
+    context = {
+        'posts': posts,
+        'title': feed.name,
+        'last_refreshed': feed.last_refreshed
+    }
+    return context
 
 
 def root(request):
@@ -26,21 +37,15 @@ def root(request):
 
 
 def quint_reader_view(request):
-    quint_url = 'https://www.bloombergquint.com/stories.rss'
-    posts = FeedReader(quint_url).posts()
-    context = {'posts': posts, 'title': 'Bloomberg Quint'}
+    context = get_feeds_context('Bloomberg Quint')
     return render(request, 'feed_reader.html', context)
 
 
 def gwtj_reader_view(request):
-    gwtj_url = 'https://girlwiththejacket.wordpress.com/feed/'
-    posts = FeedReader(gwtj_url).posts()
-    context = {'posts': posts, 'title': 'Girl With the Jacket'}
+    context = get_feeds_context('Girl With the Jacket')
     return render(request, 'feed_reader.html', context)
 
 
 def moneycontrol_reader_view(request):
-    moneycontrol_url = 'https://www.moneycontrol.com/rss/MCtopnews.xml'
-    posts = FeedReader(moneycontrol_url).posts()
-    context = {'posts': posts, 'title': 'MoneyControl'}
+    context = get_feeds_context('MoneyControl - Top News')
     return render(request, 'feed_reader.html', context)
