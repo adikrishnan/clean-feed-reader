@@ -1,7 +1,14 @@
+import datetime
 from django.db import models
 
 
-# Create your models here.
+class FeedSources(models.Model):
+    id = models.UUIDField(primary_key=True)
+    name = models.CharField(max_length=500)
+    feed_url = models.URLField(max_length=2000)
+    last_refreshed = models.DateTimeField(default=datetime.datetime.utcnow)
+
+
 class FeedSummary(models.Model):
     id = models.UUIDField(primary_key=True)
     title = models.TextField()
