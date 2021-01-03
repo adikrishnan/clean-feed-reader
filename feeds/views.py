@@ -49,3 +49,8 @@ def gwtj_reader_view(request):
 def moneycontrol_reader_view(request):
     context = get_feeds_context('MoneyControl - Top News')
     return render(request, 'feed_reader.html', context)
+
+
+def skysports_reader_view(request):
+    context = get_feeds_context('Sky Sports')
+    return render(request, 'feed_reader.html', context)
