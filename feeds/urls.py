@@ -1,11 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import SimpleRouter
 from . import views
 
 
+sources = SimpleRouter()
+sources.register(r'sources', views.FeedSourcesViewset)
+
+summary = SimpleRouter()
+summary.register(r'summary', views.FeedSummaryViewset)
+
+
 urlpatterns = [
-    path('', views.root),
-    path('quint/', views.quint_reader_view),
-    path('gwtj/', views.gwtj_reader_view),
-    path('moneycontrol/', views.moneycontrol_reader_view),
-    path('skysports/', views.skysports_reader_view),
+    path('', include(sources.urls)),
+    path('', include(summary.urls)),
 ]
