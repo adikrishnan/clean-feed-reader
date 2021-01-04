@@ -2,7 +2,7 @@ import datetime
 from django.db import models
 
 
-class FeedSources(models.Model):
+class FeedSource(models.Model):
     id = models.UUIDField(primary_key=True)
     name = models.CharField(max_length=500)
     feed_url = models.URLField(max_length=2000)

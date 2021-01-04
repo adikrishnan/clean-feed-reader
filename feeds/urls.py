@@ -4,7 +4,7 @@ from . import views
 
 
 sources = SimpleRouter()
-sources.register(r'sources', views.FeedSourcesViewset)
+sources.register(r'sources', views.FeedSourceViewset)
 
 summary = SimpleRouter()
 summary.register(r'summary', views.FeedViewset)
