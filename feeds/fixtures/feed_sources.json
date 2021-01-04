@@ -2,7 +2,7 @@
     {
         "fields": {
             "name": "MoneyControl - Top News",
-            "feed_url": "https://www.moneycontrol.com/rss/MCtopnews.xml"
+            "feed_url": "https://www.moneycontrol.com/rss/latestnews.xml"
         },
         "pk": "6634cca8-8b05-4188-8b2d-c456870503ad",
         "model": "feeds.feedsources"

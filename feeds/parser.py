@@ -101,3 +101,14 @@ class NewsMinuteParser(ParserFactory):
         soup = BeautifulSoup(page, 'lxml')
         post = soup.find(class_="article-content").text
         return post
+
+
+class MoneyControlParser(ParserFactory):
+    """ Parser implementation for NewsMinute source. """
+
+    def _get_post(self, link):
+        r = requests.get(link)
+        page = r.text
+        soup = BeautifulSoup(page, 'lxml')
+        post = soup.find(class_="arti-flow").text
+        return post
