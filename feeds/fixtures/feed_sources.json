@@ -5,7 +5,7 @@
             "feed_url": "https://www.moneycontrol.com/rss/latestnews.xml"
         },
         "pk": "6634cca8-8b05-4188-8b2d-c456870503ad",
-        "model": "feeds.feedsources"
+        "model": "feeds.feedsource"
     },
     {
         "fields": {
@@ -13,7 +13,7 @@
             "feed_url": "https://girlwiththejacket.wordpress.com/feed/"
         },
         "pk": "b109aaf3-f051-406c-84c6-59e0e4a0f7de",
-        "model": "feeds.feedsources"
+        "model": "feeds.feedsource"
     },
     {
         "fields": {
@@ -21,7 +21,7 @@
             "feed_url": "https://www.skysports.com/rss/12040"
         },
         "pk": "39e3fcf6-e71f-4394-ba14-8a829120de17",
-        "model": "feeds.feedsources"
+        "model": "feeds.feedsource"
     },
     {
         "fields": {
@@ -29,7 +29,7 @@
             "feed_url": "http://feeds.feedburner.com/ScrollinArticles.rss"
         },
         "pk": "82144b0b-dacf-44ee-991d-c002a77217fc",
-        "model": "feeds.feedsources"
+        "model": "feeds.feedsource"
     },
     {
         "fields": {
@@ -37,6 +37,6 @@
             "feed_url": "https://www.thenewsminute.com/news.xml"
         },
         "pk": "11d64ac3-47e9-427e-9300-945c6603f510",
-        "model": "feeds.feedsources"
+        "model": "feeds.feedsource"
     }
 ]

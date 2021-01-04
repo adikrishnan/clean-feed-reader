@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 import feedparser
 from bs4 import BeautifulSoup
-from .models import FeedEntry
+from .models import FeedEntry, FeedSource
 
 
 # TODO: Use a different pattern that separates individual record transformation
@@ -87,6 +87,9 @@ class ParserFactory:
         """ Save the entries to the database. """
         feed_entries = map(lambda x: FeedEntry(**x), self._entries)
         FeedEntry.objects.bulk_create(feed_entries, ignore_conflicts=True)
+        source = FeedSource.objects.get(feed_url=self.feed_url)
+        source.last_refreshed = datetime.utcnow()
+        source.save()
 
     def _build_entries(self):
         """ Manually build full post entries using each link the feed. """
