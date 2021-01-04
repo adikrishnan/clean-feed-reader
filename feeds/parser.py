@@ -88,7 +88,7 @@ class ScrollParser(ParserFactory):
         r = requests.get(link)
         page = r.text
         soup = BeautifulSoup(page, 'lxml')
-        post = soup.find("div", {"id": "article-contents"}).text
+        post = soup.find(id="article-contents").text
         return post
 
 
@@ -99,5 +99,5 @@ class NewsMinuteParser(ParserFactory):
         r = requests.get(link)
         page = r.text
         soup = BeautifulSoup(page, 'lxml')
-        post = soup.find("div", class_="article-content").text
+        post = soup.find(class_="article-content").text
         return post
