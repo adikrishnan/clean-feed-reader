@@ -90,3 +90,14 @@ class ScrollParser(ParserFactory):
         soup = BeautifulSoup(page, 'lxml')
         post = soup.find("div", {"id": "article-contents"}).text
         return post
+
+
+class NewsMinuteParser(ParserFactory):
+    """ Parser implementation for NewsMinute source. """
+
+    def _get_post(self, link):
+        r = requests.get(link)
+        page = r.text
+        soup = BeautifulSoup(page, 'lxml')
+        post = soup.find("div", class_="article-content").text
+        return post
