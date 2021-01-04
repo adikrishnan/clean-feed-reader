@@ -2,7 +2,6 @@ import time
 import uuid
 import hashlib
 from datetime import datetime
-from abc import ABC, abstractmethod
 import requests
 import feedparser
 from bs4 import BeautifulSoup
@@ -11,7 +10,7 @@ from .models import FeedSummary
 
 # TODO: Use a different pattern that separates individual record transformation
 # from transformation of set of records.
-class ParserFactory(ABC):
+class ParserFactory:
     """ An abstract factory implementation to handle specific feed parsers
     as required. """
     MIN_WORDS = 30
@@ -42,10 +41,11 @@ class ParserFactory(ABC):
         """ All entries as provided by parser """
         return self._build_entries()
 
-    @abstractmethod
     def _get_post(self, link):
         """ Get full post detail for a specific feed entry. """
-        pass
+        raise NotImplementedError(
+            'This method needs to be implemented for all sources'
+        )
 
     def _transform(self, data_dict):
         """ Transform the dictionary to include fields as per model. """
