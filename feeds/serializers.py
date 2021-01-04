@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from feeds.models import FeedSources, FeedSummary
+from feeds.models import FeedSources, FeedEntry
 
 
 class FeedSourcesSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,11 +12,11 @@ class FeedSourcesSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class FeedSummarySerializer(serializers.HyperlinkedModelSerializer):
+class FeedSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         fields = '__all__'
-        model = FeedSummary
+        model = FeedEntry
         extra_kwargs = {
             'url': {'lookup_field': 'id'},
         }

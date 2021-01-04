@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from feeds.models import FeedSources, FeedSummary
-from feeds.serializers import FeedSourcesSerializer, FeedSummarySerializer
+from feeds.models import FeedSources, FeedEntry
+from feeds.serializers import FeedSourcesSerializer, FeedSerializer
 
 
 class FeedSourcesViewset(ReadOnlyModelViewSet):
@@ -9,7 +9,7 @@ class FeedSourcesViewset(ReadOnlyModelViewSet):
     serializer_class = FeedSourcesSerializer
 
 
-class FeedSummaryViewset(ReadOnlyModelViewSet):
+class FeedViewset(ReadOnlyModelViewSet):
     lookup_field = 'id'
-    queryset = FeedSummary.objects.all()
-    serializer_class = FeedSummarySerializer
+    queryset = FeedEntry.objects.all()
+    serializer_class = FeedSerializer

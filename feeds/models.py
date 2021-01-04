@@ -9,7 +9,7 @@ class FeedSources(models.Model):
     last_refreshed = models.DateTimeField(default=datetime.datetime.utcnow)
 
 
-class FeedSummary(models.Model):
+class FeedEntry(models.Model):
     id = models.UUIDField(primary_key=True)
     title = models.TextField()
     author = models.CharField(max_length=500)
