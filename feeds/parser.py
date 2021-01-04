@@ -41,7 +41,7 @@ class ParserFactory:
 
     @property
     def article_reference(self):
-        """ (type, name) tuple to be used for identifying post details and
+        """ {type: name} dict to be used for identifying post details and
         extracting. """
         raise NotImplementedError(
             'This property needs to be implemented for all sources'
@@ -105,7 +105,7 @@ class ScrollParser(ParserFactory):
 
     @property
     def article_reference(self):
-        return ('id', 'article-contents')
+        return {'id': 'article-contents'}
 
 
 class NewsMinuteParser(ParserFactory):
@@ -113,7 +113,7 @@ class NewsMinuteParser(ParserFactory):
 
     @property
     def article_reference(self):
-        return ('class_', 'article-content')
+        return {'class_': 'article-content'}
 
 
 class MoneyControlParser(ParserFactory):
@@ -121,4 +121,4 @@ class MoneyControlParser(ParserFactory):
 
     @property
     def article_reference(self):
-        return ('class_', 'arti-flow')
+        return {'class_': 'arti-flow'}
