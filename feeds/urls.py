@@ -7,7 +7,7 @@ sources = SimpleRouter()
 sources.register(r'sources', views.FeedSourcesViewset)
 
 summary = SimpleRouter()
-summary.register(r'summary', views.FeedSummaryViewset)
+summary.register(r'summary', views.FeedViewset)
 
 
 urlpatterns = [
