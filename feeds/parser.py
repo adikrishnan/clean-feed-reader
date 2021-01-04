@@ -43,25 +43,9 @@ class ParserFactory(ABC):
         return self._build_entries()
 
     @abstractmethod
-    def filter_text(self, text):
-        """ Filter to weed out any text that might not be related to the
-        post itself.
-        """
-        # TODO: Fix logic before enabling full post retrieval
-        if len(text.split(' ')) > self.MIN_WORDS:
-            return text
-
     def _get_post(self, link):
         """ Get full post detail for a specific feed entry. """
-        r = requests.get(link)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        post = list(
-            filter(
-                None,
-                map(self.filter_text, soup.stripped_strings)
-            )
-        )
-        return '\n'.join(post)
+        pass
 
     def _transform(self, data_dict):
         """ Transform the dictionary to include fields as per model. """
@@ -97,9 +81,12 @@ class ParserFactory(ABC):
         return self._entries
 
 
-class GenericParser(ParserFactory):
-    """ Generic parser implementation. """
+class ScrollParser(ParserFactory):
+    """ Parser implementation for Scroll source. """
 
-    def filter_text(self, text):
-        """ Override abstract implementation """
-        return super().filter_text(text)
+    def _get_post(self, link):
+        r = requests.get(link)
+        page = r.text
+        soup = BeautifulSoup(page, 'lxml')
+        post = soup.find("div", {"id": "article-contents"}).text
+        return post
