@@ -22,9 +22,9 @@ class ParserFactory:
         'updated': 'updated_parsed',
     }
 
-    def __init__(self, feed_url, full_post=False):
+    def __init__(self, feed_url, full_article=False):
         self.feed_url = feed_url
-        self.full_post = full_post
+        self.full_article = full_article
         self._entries = None
 
     @property
@@ -47,7 +47,7 @@ class ParserFactory:
             'This property needs to be implemented for all sources'
         )
 
-    def _get_post(self, link):
+    def _get_article(self, link):
         """ Get full post detail for a specific feed entry. """
         try:
             r = requests.get(link)
@@ -79,11 +79,11 @@ class ParserFactory:
         model_data['summary'] = BeautifulSoup(
             model_data.get('summary'), "lxml"
         ).text
-        if self.full_post:
-            model_data['post'] = self._get_post(model_data.get('link'))
+        if self.full_article:
+            model_data['article'] = self._get_article(model_data.get('link'))
         return model_data
 
-    def save_posts(self):
+    def save_feed_entries(self):
         """ Save the entries to the database. """
         feed_entries = map(lambda x: FeedSummary(**x), self._entries)
         FeedSummary.objects.bulk_create(feed_entries, ignore_conflicts=True)
@@ -93,7 +93,7 @@ class ParserFactory:
         if not self._entries:
             self._entries = self.parser.get('entries')
         self._entries = list(map(self._transform, self._entries))
-        self.save_posts()
+        self.save_feed_entries()
         return self._entries
 
 

@@ -18,9 +18,4 @@ class FeedSummary(models.Model):
     published = models.DateTimeField()
     updated = models.DateTimeField()
     source = models.CharField(max_length=200)
-
-
-class FeedDetail(models.Model):
-    id = models.UUIDField(primary_key=True)
-    post = models.TextField(null=True, blank=True)
-    feed_summary = models.ForeignKey('FeedSummary', on_delete=models.DO_NOTHING)
+    article = models.TextField(null=True, blank=True)
