@@ -13,15 +13,13 @@ from .models import FeedSummary
 class ParserFactory:
     """ An abstract factory implementation to handle specific feed parsers
     as required. """
-    MIN_WORDS = 30
-    EXTRACT_FIELDS = {
+    extract_fields = {
         'title': 'title',
         'author': 'author',
         'link': 'link',
         'summary': 'summary',
         'published': 'published_parsed',
         'updated': 'updated_parsed',
-        # 'summary': 'post', TODO: Enable this later
     }
 
     def __init__(self, feed_url, full_post=False):
@@ -41,15 +39,31 @@ class ParserFactory:
         """ All entries as provided by parser """
         return self._build_entries()
 
+    @property
+    def article_reference(self):
+        """ (type, name) tuple to be used for identifying post details and
+        extracting. """
+        raise NotImplementedError(
+            'This property needs to be implemented for all sources'
+        )
+
     def _get_post(self, link):
         """ Get full post detail for a specific feed entry. """
-        raise NotImplementedError(
-            'This method needs to be implemented for all sources'
-        )
+        try:
+            r = requests.get(link)
+            page = r.text
+            soup = BeautifulSoup(page, 'lxml')
+            post = soup.find(**self.article_reference).text
+            return post
+        except Exception as ex:
+            return 'Encountered errors while extracting full post'
 
     def _transform(self, data_dict):
         """ Transform the dictionary to include fields as per model. """
-        model_data = {key: data_dict.get(value) for key, value in self.EXTRACT_FIELDS.items()}
+        model_data = {
+            key: data_dict.get(value)
+            for key, value in self.extract_fields.items()
+        }
         model_data['id'] = uuid.UUID(
             hashlib.md5(model_data.get('title').encode('utf-8')).hexdigest()
         )
@@ -62,7 +76,9 @@ class ParserFactory:
         model_data['updated'] = datetime.fromtimestamp(
             time.mktime(model_data.get('updated'))
         )
-        model_data['summary'] = BeautifulSoup(model_data.get('summary'), "lxml").text
+        model_data['summary'] = BeautifulSoup(
+            model_data.get('summary'), "lxml"
+        ).text
         if self.full_post:
             model_data['post'] = self._get_post(model_data.get('link'))
         return model_data
@@ -84,31 +100,22 @@ class ParserFactory:
 class ScrollParser(ParserFactory):
     """ Parser implementation for Scroll source. """
 
-    def _get_post(self, link):
-        r = requests.get(link)
-        page = r.text
-        soup = BeautifulSoup(page, 'lxml')
-        post = soup.find(id="article-contents").text
-        return post
+    @property
+    def article_reference(self):
+        return ('id', 'article-contents')
 
 
 class NewsMinuteParser(ParserFactory):
     """ Parser implementation for NewsMinute source. """
 
-    def _get_post(self, link):
-        r = requests.get(link)
-        page = r.text
-        soup = BeautifulSoup(page, 'lxml')
-        post = soup.find(class_="article-content").text
-        return post
+    @property
+    def article_reference(self):
+        return ('class_', 'article-content')
 
 
 class MoneyControlParser(ParserFactory):
     """ Parser implementation for NewsMinute source. """
 
-    def _get_post(self, link):
-        r = requests.get(link)
-        page = r.text
-        soup = BeautifulSoup(page, 'lxml')
-        post = soup.find(class_="arti-flow").text
-        return post
+    @property
+    def article_reference(self):
+        return ('class_', 'arti-flow')
