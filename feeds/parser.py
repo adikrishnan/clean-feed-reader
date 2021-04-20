@@ -100,6 +100,11 @@ class ParserFactory:
         return self._entries
 
 
+class GenericParser(ParserFactory):
+    """ Default Parser implementation. """
+    pass
+
+
 class ScrollParser(ParserFactory):
     """ Parser implementation for Scroll source. """
 
