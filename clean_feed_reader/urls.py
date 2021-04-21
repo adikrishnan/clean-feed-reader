@@ -14,9 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from .views import load_objects
+from clean_feed_reader import views
 
 urlpatterns = [
+    path('', views.root),
     path('feed/', include('feeds.urls')),
-    path('loadfeed/', load_objects),
+    path('loadfeed/', views.load_objects),
+    path('skysports/', views.sky_sports_reader_view),
+    path('moneycontrol/', views.moneycontrol_reader_view),
+    path('gwtj/', views.gwtj_reader_view),
+    path('scroll.in/', views.scroll_reader_view),
+    path('thenewsminute/', views.the_news_minute_reader_view),
 ]
