@@ -73,10 +73,10 @@ class ParserFactory:
         if not model_data.get('author'):
             model_data['author'] = model_data['source']
         model_data['published'] = datetime.fromtimestamp(
-            time.mktime(model_data.get('published'), tz=timezone('Asia/Kolkata'))
+            time.mktime(model_data.get('published')), tz=timezone('Asia/Kolkata')
         )
         model_data['updated'] = datetime.fromtimestamp(
-            time.mktime(model_data.get('updated'), timezone('Asia/Kolkata'))
+            time.mktime(model_data.get('updated')), timezone('Asia/Kolkata')
         )
         model_data['summary'] = BeautifulSoup(
             model_data.get('summary'), "lxml"
