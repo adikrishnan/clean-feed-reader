@@ -20,5 +20,5 @@ urlpatterns = [
     path('', views.root),
     path('feed/', include('feeds.urls')),
     path('loadfeed/', views.load_objects),
-    path(r'<slug:slug>/', views.reader_view),
+    path(r'reader/<slug:slug>/', views.reader_view),
 ]
