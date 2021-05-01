@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from feeds.reader import FeedReader
 from feeds.models import FeedEntry, FeedSource
 from feeds.utils import feed_refresh
 
@@ -20,9 +19,11 @@ def root(request):
     urls = [
         {'name': source.name, 'link': source.url_slug} for source in sources
     ]
+    entries_count = FeedEntry.objects.all().count()
     context = {
         'urls': urls,
         'title': 'Feed List',
+        'entries': entries_count,
     }
     return render(request, 'feed_list.html', context=context)
 
