@@ -4,8 +4,8 @@ from django.utils.timezone import now
 
 class FeedSource(models.Model):
     id = models.UUIDField(primary_key=True)
-    name = models.CharField(max_length=500)
-    feed_url = models.URLField(max_length=2000)
+    name = models.CharField(max_length=500, unique=True)
+    feed_url = models.URLField(max_length=2000, unique=True)
     last_refreshed = models.DateTimeField(default=now)
 
 
@@ -17,5 +17,5 @@ class FeedEntry(models.Model):
     summary = models.TextField()
     published = models.DateTimeField()
     updated = models.DateTimeField()
-    source = models.CharField(max_length=200)
+    source = models.ForeignKey(FeedSource, on_delete=models.CASCADE)
     article = models.TextField(null=True, blank=True)

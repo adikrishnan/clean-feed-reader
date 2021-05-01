@@ -69,7 +69,7 @@ class ParserFactory:
         model_data['id'] = uuid.UUID(
             hashlib.md5(model_data.get('title').encode('utf-8')).hexdigest()
         )
-        model_data['source'] = model_data.get('link').split('/')[2]
+        model_data['source'] = FeedSource.objects.get(feed_url=self.feed_url)
         if not model_data.get('author'):
             model_data['author'] = model_data['source']
         model_data['published'] = datetime.fromtimestamp(
