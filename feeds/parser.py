@@ -1,9 +1,11 @@
 import time
 import uuid
 import hashlib
+from pytz import timezone
 from datetime import datetime
 import requests
 import feedparser
+from django.utils.timezone import now
 from bs4 import BeautifulSoup
 from .models import FeedEntry, FeedSource
 
@@ -71,10 +73,10 @@ class ParserFactory:
         if not model_data.get('author'):
             model_data['author'] = model_data['source']
         model_data['published'] = datetime.fromtimestamp(
-            time.mktime(model_data.get('published'))
+            time.mktime(model_data.get('published'), tz=timezone('Asia/Kolkata'))
         )
         model_data['updated'] = datetime.fromtimestamp(
-            time.mktime(model_data.get('updated'))
+            time.mktime(model_data.get('updated'), timezone('Asia/Kolkata'))
         )
         model_data['summary'] = BeautifulSoup(
             model_data.get('summary'), "lxml"
@@ -88,7 +90,7 @@ class ParserFactory:
         feed_entries = map(lambda x: FeedEntry(**x), self._entries)
         FeedEntry.objects.bulk_create(feed_entries, ignore_conflicts=True)
         source = FeedSource.objects.get(feed_url=self.feed_url)
-        source.last_refreshed = datetime.utcnow()
+        source.last_refreshed = now()
         source.save()
 
     def _build_entries(self):

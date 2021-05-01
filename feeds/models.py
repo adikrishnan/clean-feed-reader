@@ -1,12 +1,12 @@
-import datetime
 from django.db import models
+from django.utils.timezone import now
 
 
 class FeedSource(models.Model):
     id = models.UUIDField(primary_key=True)
     name = models.CharField(max_length=500)
     feed_url = models.URLField(max_length=2000)
-    last_refreshed = models.DateTimeField(default=datetime.datetime.utcnow)
+    last_refreshed = models.DateTimeField(default=now)
 
 
 class FeedEntry(models.Model):
