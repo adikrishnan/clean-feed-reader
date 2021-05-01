@@ -7,6 +7,7 @@ class FeedSource(models.Model):
     name = models.CharField(max_length=500, unique=True)
     feed_url = models.URLField(max_length=2000, unique=True)
     last_refreshed = models.DateTimeField(default=now)
+    url_slug = models.SlugField(max_length=500, unique=True)
 
 
 class FeedEntry(models.Model):
