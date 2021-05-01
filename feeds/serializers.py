@@ -13,6 +13,7 @@ class FeedSourceSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class FeedSerializer(serializers.HyperlinkedModelSerializer):
+    source = serializers.CharField(source='source.name')
 
     class Meta:
         fields = '__all__'
