@@ -71,7 +71,7 @@ class ParserFactory:
         )
         model_data['source'] = FeedSource.objects.get(feed_url=self.feed_url)
         if not model_data.get('author'):
-            model_data['author'] = model_data['source']
+            model_data['author'] = model_data['source'].name
         model_data['published'] = datetime.fromtimestamp(
             time.mktime(model_data.get('published')), tz=timezone('Asia/Kolkata')
         )
