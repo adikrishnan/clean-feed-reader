@@ -43,5 +43,23 @@
         },
         "pk": "11d64ac3-47e9-427e-9300-945c6603f510",
         "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "Wired - Science",
+            "feed_url": "https://www.wired.com/feed/category/science/latest/rss",
+            "url_slug": "wired-com-science"
+        },
+        "pk": "b41e8f7a-46a5-496e-b531-99656cc486bb",
+        "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "Wired - Top Stories",
+            "feed_url": "https://www.wired.com/feed/rss",
+            "url_slug": "wired-com-top-stories"
+        },
+        "pk": "f372db8e-4897-45f6-9b15-20ca984b37fd",
+        "model": "feeds.feedsource"
     }
 ]
