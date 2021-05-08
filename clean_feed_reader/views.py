@@ -35,5 +35,7 @@ def reader_view(request, slug):
     context = {
         'posts': entries,
         'title': source.name,
+        'last_refreshed': source.last_refreshed,
+        'entries': entries.count()
     }
     return render(request, 'feed_reader.html', context)
