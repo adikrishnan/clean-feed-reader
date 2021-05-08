@@ -30,8 +30,9 @@ def root(request):
 
 def reader_view(request, slug):
     source = FeedSource.objects.get(url_slug=slug)
+    entries = FeedEntry.objects.filter(source=source.id)
     context = {
-        'posts': source.feedentry_set.all(),
+        'posts': entries,
         'title': source.name,
     }
     return render(request, 'feed_reader.html', context)
