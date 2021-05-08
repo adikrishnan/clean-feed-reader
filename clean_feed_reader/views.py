@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from feeds.models import FeedEntry, FeedSource
-from feeds.utils import feed_refresh
+from feeds.utils import feed_refresh, remove_old_entries
 
 
 def load_objects(request):
@@ -9,6 +9,7 @@ def load_objects(request):
     # Handle duplicates
     try:
         feed_refresh()
+        remove_old_entries()
         return HttpResponse('Loaded objects')
     except Exception:
         return HttpResponse('Failed to refresh')
