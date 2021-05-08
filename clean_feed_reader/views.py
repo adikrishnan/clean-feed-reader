@@ -16,7 +16,7 @@ def load_objects(request):
 
 
 def root(request):
-    sources = FeedSource.objects.all()
+    sources = FeedSource.objects.all().order_by('name')
     urls = [
         {'name': source.name, 'link': source.url_slug} for source in sources
     ]

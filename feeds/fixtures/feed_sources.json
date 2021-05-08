@@ -61,5 +61,41 @@
         },
         "pk": "f372db8e-4897-45f6-9b15-20ca984b37fd",
         "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "The Guardian - International",
+            "feed_url": "https://www.theguardian.com/international/rss",
+            "url_slug": "the-guardian-international"
+        },
+        "pk": "585b381f-1a27-4df5-bffa-6508c07efe85",
+        "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "The Guardian - World",
+            "feed_url": "https://www.theguardian.com/world/rss",
+            "url_slug": "the-guardian-world"
+        },
+        "pk": "a38e2a9b-b13c-40fb-9d50-a931b64c8006",
+        "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "The Guardian - Opinion",
+            "feed_url": "https://www.theguardian.com/uk/commentisfree/rss",
+            "url_slug": "the-guardian-opinion"
+        },
+        "pk": "60367634-8925-4301-ab1b-b0fded1a80aa",
+        "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "BBC - World",
+            "feed_url": "http://feeds.bbci.co.uk/news/world/rss.xml",
+            "url_slug": "bbc-world"
+        },
+        "pk": "539cc3d7-cda0-48cf-85b2-ceb90c70e15e",
+        "model": "feeds.feedsource"
     }
 ]
