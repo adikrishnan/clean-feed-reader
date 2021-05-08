@@ -97,5 +97,41 @@
         },
         "pk": "539cc3d7-cda0-48cf-85b2-ceb90c70e15e",
         "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "New York Times - World",
+            "feed_url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+            "url_slug": "nyt-world"
+        },
+        "pk": "325e6128-e8eb-4ce5-81f7-2b28d7b0a696",
+        "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "TechCrunch - Startups",
+            "feed_url": "http://feeds.feedburner.com/TechCrunch/startups",
+            "url_slug": "techcrunch-startups"
+        },
+        "pk": "0347155d-2eaf-44d1-a91d-d8da1c308d40",
+        "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "Techcrunch",
+            "feed_url": "http://feeds.feedburner.com/TechCrunch/",
+            "url_slug": "techcrunch"
+        },
+        "pk": "48da12b9-73c3-454c-b5a4-bf66d68dec27",
+        "model": "feeds.feedsource"
+    },
+    {
+        "fields": {
+            "name": "The Next Web",
+            "feed_url": "https://thenextweb.com/feed",
+            "url_slug": "tnw"
+        },
+        "pk": "314e953f-5f88-40ae-ae64-f28392dac9b1",
+        "model": "feeds.feedsource"
     }
 ]
