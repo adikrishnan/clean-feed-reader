@@ -6,8 +6,11 @@ from datetime import datetime
 import requests
 import feedparser
 from django.utils.timezone import now
+from django.utils.log import logging
 from bs4 import BeautifulSoup
 from .models import FeedEntry, FeedSource
+
+logger = logging.getLogger('feedreader')
 
 
 # TODO: Use a different pattern that separates individual record transformation
@@ -66,6 +69,7 @@ class ParserFactory:
             key: data_dict.get(value)
             for key, value in self.extract_fields.items()
         }
+        logger.debug(f'Pre data transform: {model_data}')
         model_data['id'] = uuid.UUID(
             hashlib.md5(model_data.get('title').encode('utf-8')).hexdigest()
         )
@@ -83,13 +87,15 @@ class ParserFactory:
         ).text
         if self.full_article:
             model_data['article'] = self._get_article(model_data.get('link'))
+        logger.debug(f'Post data transform: {model_data}')
         return model_data
 
     def save_feed_entries(self):
         """ Save the entries to the database. """
         feed_entries = map(lambda x: FeedEntry(**x), self._entries)
-        FeedEntry.objects.bulk_create(feed_entries, ignore_conflicts=True)
+        o = FeedEntry.objects.bulk_create(feed_entries, ignore_conflicts=True)
         source = FeedSource.objects.get(feed_url=self.feed_url)
+        logger.info(f'Loaded {len(o)} entries for source {source.name}')
         source.last_refreshed = now()
         source.save()
 
