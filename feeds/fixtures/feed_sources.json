@@ -100,15 +100,6 @@
     },
     {
         "fields": {
-            "name": "New York Times - World",
-            "feed_url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
-            "url_slug": "nyt-world"
-        },
-        "pk": "325e6128-e8eb-4ce5-81f7-2b28d7b0a696",
-        "model": "feeds.feedsource"
-    },
-    {
-        "fields": {
             "name": "TechCrunch - Startups",
             "feed_url": "http://feeds.feedburner.com/TechCrunch/startups",
             "url_slug": "techcrunch-startups"
